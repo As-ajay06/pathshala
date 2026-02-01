@@ -1,4 +1,4 @@
-# CodersFest Learning Platform
+# Pathshala Learning Platform
 
 A modern online learning platform built with Next.js 16, featuring course management, live classes, AI-powered assistance, and integrated payment processing.
 
@@ -47,7 +47,7 @@ src/
 ```bash
 # Clone & install
 git clone <repository-url>
-cd codersfest
+cd pathshala
 npm install
 
 # Configure environment
