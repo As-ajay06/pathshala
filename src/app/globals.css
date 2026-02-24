@@ -37,7 +37,7 @@
   --error-400: #f87171;
 
   /* Background & Surface - Dark Theme */
-  --bg-primary: #0a0a12;
+  --bg-primary: oklch(98.5% 0 0);
   --bg-secondary: #12121a;
   --bg-tertiary: #1a1a24;
   --surface-glass: rgba(255, 255, 255, 0.03);
@@ -45,7 +45,7 @@
   --surface-glass-active: rgba(255, 255, 255, 0.08);
 
   /* Text Colors */
-  --text-primary: #f8fafc;
+  --text-primary: oklch(48.8% 0.243 264.376);
   --text-secondary: #94a3b8;
   --text-tertiary: #64748b;
   --text-muted: #475569;

@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import { GraduationCap, Mail, Lock, Eye, EyeOff, ArrowRight, Chrome } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { data: session } = useSession();
@@ -29,8 +29,11 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const inputElement = useRef<HTMLInputElement>(null);
+
     // Show registered success message
     useEffect(() => {
+        inputElement.current?.focus();
         if (searchParams.get('registered') === 'true') {
             setError('Account created! Please log in.');
         }
@@ -65,14 +68,14 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--bg-primary)] flex">
+        <div className="min-h-screen bg-background flex">
             {/* Left Side - Branding */}
             <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary-600)] to-[var(--primary-900)]" />
+                <div className="absolute inset-0 bg-linear-to-br from-(--primary-600) to-(--primary-900)" />
                 <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
 
-                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[var(--primary-400)]/20 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[var(--accent-400)]/20 rounded-full blur-3xl animate-pulse delay-500" />
+                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-(--primary-400)/20 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-(--accent-400)/20 rounded-full blur-3xl animate-pulse delay-500" />
 
                 <div className="relative z-10 flex flex-col justify-center p-12">
                     <Link href="/" className="flex items-center gap-3 mb-8">
@@ -102,18 +105,18 @@ export default function LoginPage() {
                     </div>
 
                     <div className="glass-card p-8">
-                        <h1 className="text-2xl font-bold text-white mb-2">Log In</h1>
-                        <p className="text-[var(--text-secondary)] mb-6">
+                        <h1 className="text-2xl font-bold text-(--primary-500) mb-2">Log In</h1>
+                        <p className="text-(--text-secondary) mb-6">
                             Don't have an account?{' '}
-                            <Link href="/auth/signup" className="text-[var(--primary-400)] hover:underline">
+                            <Link href="/auth/signup" className="text-(--primary-500) hover:underline">
                                 Sign up
                             </Link>
                         </p>
 
                         {error && (
                             <div className={`mb-4 p-3 rounded-lg border text-sm ${error.includes('Account')
-                                    ? 'bg-[var(--success-500)]/10 border-[var(--success-500)]/30 text-[var(--success-400)]'
-                                    : 'bg-[var(--error-500)]/10 border-[var(--error-500)]/30 text-[var(--error-400)]'
+                                ? 'bg-(--success-500)/10 border-(--success-500)/30 text-(--success-400)'
+                                : 'bg-(--error-500)/10 border-(--error-500)/30 text-(--error-400)'
                                 }`}>
                                 {error}
                             </div>
@@ -121,11 +124,12 @@ export default function LoginPage() {
 
                         <form onSubmit={handleLogin} className="space-y-4">
                             <div className="form-group">
-                                <label className="input-label">Email</label>
+                                <label className="input-label ">Email</label>
                                 <div className="relative">
-                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" />
+                                    {/* <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" /> */}
                                     <input
                                         type="email"
+                                        ref={inputElement}
                                         className="input pl-10"
                                         placeholder="you@example.com"
                                         value={email}
@@ -143,7 +147,7 @@ export default function LoginPage() {
                                     </Link>
                                 </div>
                                 <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" />
+                                    {/* <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" /> */}
                                     <input
                                         type={showPassword ? 'text' : 'password'}
                                         className="input pl-10 pr-10"
@@ -186,5 +190,21 @@ export default function LoginPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+function LoginLoading() {
+    return (
+        <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center">
+            <div className="animate-pulse text-white">Loading...</div>
+        </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<LoginLoading />}>
+            <LoginForm />
+        </Suspense>
     );
 }

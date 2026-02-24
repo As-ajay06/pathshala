@@ -23,7 +23,6 @@ import {
     Maximize2,
     Minimize2,
     PhoneOff,
-    Record,
     Pause,
     Play,
     Volume2,
@@ -33,7 +32,8 @@ import {
     Zap,
     Gift,
     Star,
-    CheckCircle
+    CheckCircle,
+    Circle
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -190,7 +190,7 @@ export default function LiveStudioPage() {
 
                     {isRecording && (
                         <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--error-500)]/20 rounded-lg">
-                            <Record className="w-4 h-4 text-[var(--error-400)]" />
+                            <Circle className="w-4 h-4 text-[var(--error-400)]" />
                             <span className="text-sm text-[var(--error-400)]">Recording</span>
                         </div>
                     )}
@@ -298,7 +298,7 @@ export default function LiveStudioPage() {
                                 : 'bg-[var(--surface-glass)] text-white hover:bg-[var(--surface-glass-hover)]'
                                 }`}
                         >
-                            <Record className="w-5 h-5" />
+                            <Circle className="w-5 h-5" />
                         </button>
 
                         <button className="w-12 h-12 rounded-full bg-[var(--surface-glass)] text-white hover:bg-[var(--surface-glass-hover)] flex items-center justify-center">

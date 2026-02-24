@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import {
     GraduationCap,
     LayoutDashboard,
@@ -38,8 +39,17 @@ export default function InstructorLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
+    const { data: session } = useSession();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+    const userName = session?.user?.name || 'Instructor';
+    const userInitials = userName
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
 
     return (
         <div className="min-h-screen bg-[var(--bg-primary)]">
@@ -96,7 +106,10 @@ export default function InstructorLayout({
                     </nav>
 
                     {/* Logout */}
-                    <button className="sidebar-link text-[var(--error-400)] hover:bg-[var(--error-500)]/10">
+                    <button
+                        className="sidebar-link text-[var(--error-400)] hover:bg-[var(--error-500)]/10"
+                        onClick={() => signOut({ callbackUrl: '/auth/login' })}
+                    >
                         <LogOut className="w-5 h-5" />
                         Log Out
                     </button>
@@ -148,8 +161,8 @@ export default function InstructorLayout({
                                     className="flex items-center gap-2"
                                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                                 >
-                                    <div className="avatar bg-gradient-to-br from-[var(--accent-500)] to-[var(--accent-700)]">SJ</div>
-                                    <span className="hidden md:block text-sm font-medium text-white">Sarah Johnson</span>
+                                    <div className="avatar bg-gradient-to-br from-[var(--accent-500)] to-[var(--accent-700)]">{userInitials}</div>
+                                    <span className="hidden md:block text-sm font-medium text-white">{userName}</span>
                                     <ChevronDown className="w-4 h-4 text-[var(--text-secondary)]" />
                                 </button>
 
@@ -161,7 +174,10 @@ export default function InstructorLayout({
                                         <Link href="/student/dashboard" className="block px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-white rounded-lg hover:bg-[var(--surface-glass)]">
                                             Switch to Student
                                         </Link>
-                                        <button className="w-full text-left px-3 py-2 text-sm text-[var(--error-400)] rounded-lg hover:bg-[var(--error-500)]/10">
+                                        <button
+                                            className="w-full text-left px-3 py-2 text-sm text-[var(--error-400)] rounded-lg hover:bg-[var(--error-500)]/10"
+                                            onClick={() => signOut({ callbackUrl: '/auth/login' })}
+                                        >
                                             Log Out
                                         </button>
                                     </div>

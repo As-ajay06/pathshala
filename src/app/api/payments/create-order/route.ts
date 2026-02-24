@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import razorpay from '@/lib/razorpay';
+import getRazorpay from '@/lib/razorpay';
 import connectDB from '@/lib/db';
 import mongoose from 'mongoose';
 
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
             },
         };
 
-        const razorpayOrder = await razorpay.orders.create(options);
+        const razorpayOrder = await getRazorpay().orders.create(options);
 
         // Save order to database
         const order = await Order.create({

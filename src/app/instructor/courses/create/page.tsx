@@ -174,16 +174,82 @@ export default function CreateCoursePage() {
 
     const handlePublish = async () => {
         setLoading(true);
-        // TODO: Save to Supabase
-        await new Promise((res) => setTimeout(res, 1500));
-        router.push('/instructor/courses');
+        try {
+            const allLessons = sections.flatMap(s =>
+                s.lessons.map(l => ({
+                    title: l.title,
+                    type: l.type,
+                    duration: l.duration,
+                    content: '',
+                }))
+            );
+            const res = await fetch('/api/courses', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title,
+                    subtitle,
+                    description,
+                    category,
+                    level,
+                    language,
+                    lessons: allLessons,
+                    price: isFree ? 0 : parseFloat(price) || 0,
+                    isPublished: true,
+                }),
+            });
+            if (res.ok) {
+                router.push('/instructor/courses');
+            } else {
+                const err = await res.json();
+                alert(err.error || 'Failed to publish course');
+                setLoading(false);
+            }
+        } catch (err) {
+            console.error('Publish error:', err);
+            alert('Failed to publish course');
+            setLoading(false);
+        }
     };
 
     const handleSaveDraft = async () => {
         setLoading(true);
-        // TODO: Save draft to Supabase
-        await new Promise((res) => setTimeout(res, 1000));
-        setLoading(false);
+        try {
+            const allLessons = sections.flatMap(s =>
+                s.lessons.map(l => ({
+                    title: l.title,
+                    type: l.type,
+                    duration: l.duration,
+                    content: '',
+                }))
+            );
+            const res = await fetch('/api/courses', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title,
+                    subtitle,
+                    description,
+                    category,
+                    level,
+                    language,
+                    lessons: allLessons,
+                    price: isFree ? 0 : parseFloat(price) || 0,
+                    isPublished: false,
+                }),
+            });
+            if (res.ok) {
+                alert('Draft saved successfully!');
+            } else {
+                const err = await res.json();
+                alert(err.error || 'Failed to save draft');
+            }
+        } catch (err) {
+            console.error('Draft save error:', err);
+            alert('Failed to save draft');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

@@ -1,12 +1,20 @@
 import Razorpay from 'razorpay';
 
-// Initialize Razorpay instance
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID || '',
-    key_secret: process.env.RAZORPAY_KEY_SECRET || '',
-});
+// Lazy-initialize Razorpay instance to avoid build-time crashes when env vars are missing
+let razorpayInstance: Razorpay | null = null;
 
-export default razorpay;
+export default function getRazorpay(): Razorpay {
+    if (!razorpayInstance) {
+        if (!process.env.RAZORPAY_KEY_ID) {
+            throw new Error('RAZORPAY_KEY_ID environment variable is required');
+        }
+        razorpayInstance = new Razorpay({
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret: process.env.RAZORPAY_KEY_SECRET || '',
+        });
+    }
+    return razorpayInstance;
+}
 
 // Types for Razorpay
 export interface RazorpayOrder {

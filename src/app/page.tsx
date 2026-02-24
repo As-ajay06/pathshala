@@ -11,6 +11,7 @@ import {
   Star,
   Users,
   Clock,
+
   CheckCircle,
   Sparkles,
   Zap,
@@ -19,43 +20,32 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import connectDB from '@/lib/db';
+import Course from '@/models/Course';
 
-// Sample featured courses for the landing page
-const featuredCourses = [
-  {
-    id: '1',
-    title: 'Complete Web Development Bootcamp',
-    instructor: 'Sarah Johnson',
-    rating: 4.9,
-    students: 12500,
-    price: 89.99,
-    image: '/api/placeholder/400/225',
-    category: 'Development',
-    level: 'Beginner'
-  },
-  {
-    id: '2',
-    title: 'Machine Learning A-Z: From Zero to Hero',
-    instructor: 'Dr. Michael Chen',
-    rating: 4.8,
-    students: 8300,
-    price: 129.99,
-    image: '/api/placeholder/400/225',
-    category: 'Data Science',
-    level: 'Intermediate'
-  },
-  {
-    id: '3',
-    title: 'UI/UX Design Masterclass',
-    instructor: 'Emily Rodriguez',
-    rating: 4.9,
-    students: 15200,
-    price: 79.99,
-    image: '/api/placeholder/400/225',
-    category: 'Design',
-    level: 'All Levels'
-  },
-];
+// Fetch featured courses from DB
+async function getFeaturedCourses() {
+  try {
+    await connectDB();
+    const courses = await Course.find({ isPublished: true })
+      .sort({ rating: -1, studentsCount: -1 })
+      .limit(6)
+      .populate('instructor', 'name')
+      .lean();
+    return courses.map((c: any) => ({
+      id: c._id.toString(),
+      title: c.title,
+      instructor: c.instructor?.name || 'Unknown',
+      rating: c.rating || 0,
+      students: c.studentsCount || 0,
+      price: c.price || 0,
+      category: c.category,
+      level: c.level,
+    }));
+  } catch {
+    return [];
+  }
+}
 
 const features = [
   {
@@ -121,7 +111,8 @@ const stats = [
   { value: '98%', label: 'Satisfaction Rate' },
 ];
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const featuredCourses = await getFeaturedCourses();
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
       {/* Navigation */}
@@ -153,9 +144,9 @@ export default function LandingPage() {
         <div className="container hero-content">
           <div className="grid lg:grid-cols-2 gap-12 items-center pt-24">
             <div className="animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--surface-glass)] border border-[var(--border-subtle)] mb-6">
-                <Sparkles className="w-4 h-4 text-[var(--accent-400)]" />
-                <span className="text-sm text-[var(--text-secondary)]">AI-Powered Learning Platform</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-(--surface-glass) border border-[var(--border-subtle)] mb-6">
+                <Sparkles className="w-4 h-4 text-(--accent-400)" />
+                <span className="text-sm text-(--text-secondary)">AI-Powered Learning Platform</span>
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
@@ -163,7 +154,7 @@ export default function LandingPage() {
                 <span className="gradient-text">Smart Learning</span>
               </h1>
 
-              <p className="text-lg text-[var(--text-secondary)] mb-8 max-w-xl">
+              <p className="text-lg text-(--text-secondary) mb-8 max-w-xl">
                 Join thousands of learners and instructors on the most advanced digital education platform.
                 Personalized courses, live classes, and AI-driven recommendations.
               </p>
@@ -183,7 +174,7 @@ export default function LandingPage() {
                   {['SK', 'MK', 'SR', 'AP'].map((initials, i) => (
                     <div
                       key={i}
-                      className="avatar border-2 border-[var(--bg-primary)]"
+                      className="avatar border-2 border-background"
                       style={{
                         background: `linear-gradient(135deg, hsl(${220 + i * 30}, 70%, 60%), hsl(${240 + i * 30}, 70%, 50%))`
                       }}
@@ -195,7 +186,7 @@ export default function LandingPage() {
                 <div>
                   <div className="flex items-center gap-1 mb-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-[var(--accent-400)] text-[var(--accent-400)]" />
+                      <Star key={i} className="w-4 h-4 fill-(--accent-400) text-(--accent-400)" />
                     ))}
                     <span className="text-sm text-white ml-1">4.9</span>
                   </div>
@@ -340,13 +331,13 @@ export default function LandingPage() {
                     <span>•</span>
                     <span className="flex items-center gap-1">
                       <Users className="w-3 h-3" />
-                      {(course.students / 1000).toFixed(1)}K
+                      {course.students >= 1000 ? `${(course.students / 1000).toFixed(1)}K` : course.students}
                     </span>
                   </div>
                   <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">{course.title}</h3>
                   <p className="text-sm text-[var(--text-secondary)] mb-4">{course.instructor}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-white">${course.price}</span>
+                    <span className="text-xl font-bold text-white">₹{course.price}</span>
                     <Link href={`/student/courses/${course.id}`} className="btn btn-sm btn-primary">
                       Enroll Now
                     </Link>

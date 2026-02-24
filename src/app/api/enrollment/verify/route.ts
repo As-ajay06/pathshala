@@ -6,9 +6,11 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2025-01-27.acacia',
-});
+function getStripe() {
+    return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: '2025-12-15.clover' as Stripe.LatestApiVersion,
+    });
+}
 
 export async function POST(request: Request) {
     try {
@@ -24,7 +26,7 @@ export async function POST(request: Request) {
         }
 
         // Verify session with Stripe
-        const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
+        const checkoutSession = await getStripe().checkout.sessions.retrieve(sessionId);
 
         if (checkoutSession.payment_status !== 'paid') {
             return NextResponse.json({ error: 'Payment not paid' }, { status: 400 });
