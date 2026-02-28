@@ -48,7 +48,7 @@ export default function StudentLayout({
         .slice(0, 2);
 
     return (
-        <div className="min-h-screen bg-[var(--bg-primary)]">
+        <div className="min-h-screen bg-background">
             {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
                 <div
@@ -112,7 +112,7 @@ export default function StudentLayout({
             {/* Main Content Area */}
             <div className="lg:ml-[280px]">
                 {/* Top Header */}
-                <header className="sticky top-0 z-30 bg-[var(--bg-primary)]/80 backdrop-blur-xl border-b border-[var(--border-subtle)]">
+                <header className="sticky top-0 z-30 bg-background backdrop-blur-xl border-b border-[var(--border-subtle)]">
                     <div className="flex items-center justify-between h-16 px-6">
                         {/* Mobile Menu Button */}
                         <button
@@ -154,7 +154,7 @@ export default function StudentLayout({
                                 </button>
 
                                 {userMenuOpen && (
-                                    <div className="absolute right-0 top-full mt-2 w-48 glass-card p-2 animate-fade-in">
+                                    <div className="absolute right-0 top-full mt-2 w-48 bg-background rounded-sm p-2 animate-fade-in">
                                         <Link href="/student/settings" className="block px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-white rounded-lg hover:bg-[var(--surface-glass)]">
                                             Settings
                                         </Link>

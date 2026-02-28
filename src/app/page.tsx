@@ -80,6 +80,7 @@ const features = [
   },
 ];
 
+// Testimonial dummy data.
 const testimonials = [
   {
     name: 'Alex Thompson',
@@ -114,12 +115,12 @@ const stats = [
 export default async function LandingPage() {
   const featuredCourses = await getFeaturedCourses();
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)]">
+    <div className="min-h-screen bg-(--bg-secondary)">
       {/* Navigation */}
       <nav className="navbar">
         <div className="container navbar-content">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary-500)] to-[var(--primary-700)] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-(--primary-500) to-(--primary-700) flex items-center justify-center">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
             <span className="text-xl font-bold text-white">LearnFlow</span>
@@ -144,7 +145,7 @@ export default async function LandingPage() {
         <div className="container hero-content">
           <div className="grid lg:grid-cols-2 gap-12 items-center pt-24">
             <div className="animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-(--surface-glass) border border-[var(--border-subtle)] mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-(--surface-glass) border border-(--border-subtle) mb-6">
                 <Sparkles className="w-4 h-4 text-(--accent-400)" />
                 <span className="text-sm text-(--text-secondary)">AI-Powered Learning Platform</span>
               </div>
@@ -190,7 +191,7 @@ export default async function LandingPage() {
                     ))}
                     <span className="text-sm text-white ml-1">4.9</span>
                   </div>
-                  <p className="text-sm text-[var(--text-secondary)]">From 10,000+ reviews</p>
+                  <p className="text-sm text-(--text-secondary)">From 10,000+ reviews</p>
                 </div>
               </div>
             </div>
@@ -220,7 +221,7 @@ export default async function LandingPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-white">Quiz Completed!</p>
-                      <p className="text-xs text-[var(--text-secondary)]">Score: 95%</p>
+                      <p className="text-xs text-(--text-secondary)">Score: 95%</p>
                     </div>
                   </div>
                 </div>

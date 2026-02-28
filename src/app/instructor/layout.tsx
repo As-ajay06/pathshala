@@ -119,7 +119,7 @@ export default function InstructorLayout({
             {/* Main Content Area */}
             <div className="lg:ml-[280px]">
                 {/* Top Header */}
-                <header className="sticky top-0 z-30 bg-[var(--bg-primary)]/80 backdrop-blur-xl border-b border-[var(--border-subtle)]">
+                <header className="sticky top-0 z-30 bg-background backdrop-blur-xl border-b border-[var(--border-subtle)]">
                     <div className="flex items-center justify-between h-16 px-6">
                         {/* Mobile Menu Button */}
                         <button

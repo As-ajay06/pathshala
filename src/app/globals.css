@@ -103,8 +103,8 @@
 
 /* Tailwind Theme Extension */
 @theme inline {
-  --color-background: var(--bg-primary);
-  --color-foreground: var(--text-primary);
+  --color-background: var(--bg-secondary);
+  --color-foreground: var(--text-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -119,7 +119,7 @@ html {
 }
 
 body {
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
   line-height: 1.6;
@@ -129,7 +129,7 @@ body {
 
 /* Selection */
 ::selection {
-  background: var(--primary-500);
+  background: var(--secondary-500);
   color: white;
 }
 

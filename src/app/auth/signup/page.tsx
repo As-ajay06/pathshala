@@ -95,7 +95,7 @@ function SignupForm() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--bg-primary)] flex">
+        <div className="min-h-screen bg-background flex">
             {/* Left Side - Branding */}
             <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-600)] to-[var(--primary-900)]" />

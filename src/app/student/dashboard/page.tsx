@@ -70,7 +70,7 @@ export default function StudentDashboard() {
     }
 
     return (
-        <div className="space-y-8 animate-fade-in">
+        <div className="space-y-8 animate-fade-in ">
             {/* Welcome Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
